@@ -3,23 +3,23 @@
   <meta charset="UTF-8" />
   <title>らめえんたいまぁ</title>
   <style type="text/css">
-  html{
-    background-color: white;
-  }
-  #blink-label{
-    position:absolute;
-    bottom:10px;
-    right:10px;
-    font-size:100px;
-    color:red;
-  }
-  #blink-label.blinking{
-    color: #33FF00;
-  }
+    html{
+      background-color: white;
+    }
+    #label{
+      position:absolute;
+      bottom:10px;
+      right:10px;
+      font-size:100px;
+      color:red;
+    }
+    #label.FSR_recieving{
+      color: #33FF00;
+    }
   </style>
   <script src="jquery-1.7.2.min.js"></script>
   <script type="text/javascript">
-  	function $(id){
+    function $(id){
       return document.getElementById(id);
     }
 
@@ -35,7 +35,7 @@
 
     window.onload=function(){
       DBG=$("DBG");
-  		start_btn=$("start_btn");
+      start_btn=$("start_btn");
       time_txt=$("time_txt");
       if(document.arduino){
         var arduino=document.arduino;
@@ -52,63 +52,63 @@
           ,1000
         );
       }
-  		start_btn.onclick=function(){
-  			if(time_id==0){
+      start_btn.onclick=function(){
+        if(time_id==0){
           start_btn.value="STOP";
           time_id=setInterval(showTime,500);
           if(start_time==null)start_time=new Date();
         }else resetClock();
       };
-    	$("min1_btn").onclick=function(){setClock(1*60);}
-	  	$("min3_btn").onclick=function(){setClock(3*60);};
-  		$("min4_btn").onclick=function(){setClock(4*60);};
+      $("min1_btn").onclick=function(){setClock(1*60);}
+      $("min3_btn").onclick=function(){setClock(3*60);};
+      $("min4_btn").onclick=function(){setClock(4*60);};
       $("min5_btn").onclick=function(){setClock(5*60);};
     };
 
-  	function setClock(sec){
-   		remain_time=sec;
-   		var h=Math.floor(remain_time/60);
-   		var m=remain_time%60;
-   		time_txt.value=kt(h)+":"+kt(m);
-   		if(time_id>0)resetClock();
-     }
+    function setClock(sec){
+      remain_time=sec;
+      var h=Math.floor(remain_time/60);
+      var m=remain_time%60;
+      time_txt.value=kt(h)+":"+kt(m);
+      if(time_id>0)resetClock();
+    }
 
-   	function resetClock(){
+    function resetClock(){
       if(time_id>0){
         clearInterval(time_id);
         time_id = 0;
       }
-   		start_time=null;
-   		start_btn.value="START";
-   		displayTime(remain_time);
-   	}
+      start_time=null;
+      start_btn.value="START";
+      displayTime(remain_time);
+    }
 
-   	function displayTime(sec_t){
-   		var sec=sec_t%60;
-   		var min=Math.floor(sec_t/60)%60;
-   		time_txt.value=kt(min)+":"+kt(sec);
-   	}
+    function displayTime(sec_t){
+      var sec=sec_t%60;
+      var min=Math.floor(sec_t/60)%60;
+      time_txt.value=kt(min)+":"+kt(sec);
+    }
 
     function showTime(){
       clearInterval(recieve_id);
-   		var now=new Date();
-   		var t=Math.floor((now.getTime()-start_time.getTime())/1000);
-   		var r=remain_time-t;
-   		displayTime(r);
-   		if(r<=0){
-         r=0;
-      	 beep();
-   			 resetClock();
+      var now=new Date();
+      var t=Math.floor((now.getTime()-start_time.getTime())/1000);
+      var r=remain_time-t;
+      displayTime(r);
+      if(r<=0){
+        r=0;
+      	beep();
+        resetClock();
       }
     }
 
-   	function kt(s){
-   		var a="00"+s;
-   		return a.substr(a.length-2,2);
-   	}
+    function kt(s){
+      var a="00"+s;
+      return a.substr(a.length-2,2);
+    }
 
-   	function beep(){
-   		var audio=$("beep_audio");
+    function beep(){
+      var audio=$("beep_audio");
       var f=Math.floor(Math.random()*100);
       if(!audio){
         if(f>75)alert(alert_msg1);
@@ -120,27 +120,20 @@
         else alert(alert_msg2);
         return;
       }
-   		audio.play();
+      audio.play();
       if(f>75)alert(alert_msg1);
       else alert(alert_msg2);
-   	}
+    }
   </script>
 </head>
 <body>
 <div id="main_form" style="text-align:center;">
-	<input id="time_txt" type="text" value="03:00" 
-		style="font-size:48px; width:250px;text-align:center;"/><br/>
-	<input id="start_btn" type="button" value="START"
-		style="width:250px; height:46px;"><br/>
-	<br/>
-	<input id="min1_btn" type="button" value="1分セット"
-		style="width:120px; height:46px;margin-bottom:8px;">
-	<input id="min3_btn" type="button" value="3分セット"
-		style="width:120px; height:46px;margin-bottom:8px;"><br/>
-	<input id="min4_btn" type="button" value="4分セット"
-		style="width:120px; height:46px;margin-bottom:8px;">
-	<input id="min5_btn" type="button" value="5分セット"
-		style="width:120px; height:46px;"><br/>
+	<input id="time_txt" type="text" value="03:00" style="font-size:48px; width:250px;text-align:center;"/><br/>
+	<input id="start_btn" type="button" value="START"styh:lll2lel height:46px;"><br/><br/>
+	<input id="min1_btn" type="button" value="1分セット"style="width:120px; height:46px;margin-bottom:8px;">
+	<input id="min3_btn" type="button" value="3分セット"style="width:120px; height:46px;margin-bottom:8px;"><br/>
+	<input id="min4_btn" type="button" value="4分セット"style="width:120px; height:46px;margin-bottom:8px;">
+	<input id="min5_btn" type="button" value="5分セット"style="width:120px; height:46px;"><br/>
 	<br/>
 	<audio id="beep_audio" controls autobuffer>
   		<source src="alerm.ogg" />
@@ -148,6 +141,6 @@
 	</audio>
   <input id="DBG" type="text" value="FSR" style="width:120px; height:120px;text-align:center;"><br/>
 </div>
-<div id="blink-label">らめえん</div>
+<div id="label">らめえん</div>
 </body>
 </html>
