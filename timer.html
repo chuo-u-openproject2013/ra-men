@@ -18,8 +18,8 @@
     }
     body{
       background-image:url(img/bg.jpg);
-      background-repeat:repeat-x;
-      background-position:center;
+      background-repeat:no-repeat;
+      background-position:left bottom;
     }
   </style>
   <script src="jquery-1.7.2.min.js"></script>
@@ -36,6 +36,7 @@
     var start_btn;
     var alert_msg1="まだですー";
     var alert_msg2="はい、ただいま〜";
+    var push_cnt=0;
     var DBG;
 
     window.onload=function(){
@@ -45,17 +46,25 @@
       if(document.arduino){
         var arduino=document.arduino;
         arduino.open("/dev/tty.usbmodem411");
-        recieve_id=setInterval(
-          function(){
-            var fsr=arduino.analogRead(0);
-            if(fsr>200){
-              time_id=setInterval(showTime,500);
-              start_time=new Date();
-            }
-            DBG.value="FSR:"+fsr;
+        while(true){
+          var fsr=arduino.analogRead(0);
+          if(fsr>200){
+            time_id=setInterval(showTime,500);
+            start_time=new Date();
+            break;
           }
-          ,1000
-        );
+        }
+        //recieve_id=setInterval(
+        //  function(){
+        //    var fsr=arduino.analogRead(0);
+        //    if(fsr>200){
+        //      time_id=setInterval(showTime,500);
+        //      start_time=new Date();
+        //    }
+        //    DBG.value="FSR:"+fsr;
+        //  }
+        //  ,1000
+        //);
       }
       start_btn.onclick=function(){
         if(time_id==0){
@@ -68,8 +77,18 @@
       $("min3_btn").onclick=function(){setClock(3*60);};
       $("min4_btn").onclick=function(){setClock(4*60);};
       $("min5_btn").onclick=function(){setClock(5*60);};
-      $("early_btn").onclick=function(){remain_time+=30;};
-      $("delay_btn").onclick=function(){remain_time-=30;};
+      $("early_btn").onclick=function(){
+        if(push_cnt==0){
+          remain_time-=30;
+          push_cnt=1;
+        }
+      };
+      $("delay_btn").onclick=function(){
+        if(push_cnt==0){
+          remain_time+=30;
+          push_cnt=1;
+        }
+      };
     };
 
     function setClock(sec){
@@ -83,7 +102,8 @@
     function resetClock(){
       if(time_id>0){
         clearInterval(time_id);
-        time_id = 0;
+        time_id=0;
+        time_text="03:00";
       }
       start_time=null;
       start_btn.value="START";
@@ -148,8 +168,8 @@
   		<source src="alert/alerm.ogg" />
   		<source src="alert/alerm.mp3" />
 	</audio>
-  <input id="DBG" type="text" value="FSR" style="width:120px; height:120px;text-align:center;"><br/>
 </div>
+<input id="DBG" type="text" value="FSR" style="width:120px; height:120px;"><br/>
 <div id="label">らめえん</div>
 </body>
 </html>
