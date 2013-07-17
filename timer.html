@@ -16,6 +16,11 @@
     #label.FSR_recieving{
       color: #33FF00;
     }
+    body{
+      background-image:url(img/bg.jpg);
+      background-repeat:repeat-x;
+      background-position:center;
+    }
   </style>
   <script src="jquery-1.7.2.min.js"></script>
   <script type="text/javascript">
@@ -63,6 +68,8 @@
       $("min3_btn").onclick=function(){setClock(3*60);};
       $("min4_btn").onclick=function(){setClock(4*60);};
       $("min5_btn").onclick=function(){setClock(5*60);};
+      $("early_btn").onclick=function(){remain_time+=30;};
+      $("delay_btn").onclick=function(){remain_time-=30;};
     };
 
     function setClock(sec){
@@ -128,16 +135,18 @@
 </head>
 <body>
 <div id="main_form" style="text-align:center;">
-	<input id="time_txt" type="text" value="03:00" style="font-size:48px; width:250px;text-align:center;"/><br/>
-	<input id="start_btn" type="button" value="START" style="width:250px; height:46px;"><br/><br/>
-	<input id="min1_btn" type="button" value="1分セット"style="width:120px; height:46px;margin-bottom:8px;">
-	<input id="min3_btn" type="button" value="3分セット"style="width:120px; height:46px;margin-bottom:8px;"><br/>
-	<input id="min4_btn" type="button" value="4分セット"style="width:120px; height:46px;margin-bottom:8px;">
-	<input id="min5_btn" type="button" value="5分セット"style="width:120px; height:46px;"><br/>
+	<input id="time_txt" type="text" value="03:00" style="font-size:72px; width:450px;text-align:center;"/><br/>
+	<input id="early_btn" type="button" value="硬" style="font-size:48px; width:120px; height:96px;">
+	<input id="start_btn" type="button" value="START" style="font-size:48px; width:450px; height:96px;">
+  <input id="delay_btn" type="button" value="柔" style="font-size:48px; width:120px; height:96px;"><br/><br/>
+	<input id="min1_btn" type="button" value="1分セット" style="font-size:36px; width:220px; height:96px;margin-bottom:8px;">
+	<input id="min3_btn" type="button" value="3分セット" style="font-size:36px; width:220px; height:96px;margin-bottom:8px;"><br/>
+	<input id="min4_btn" type="button" value="4分セット" style="font-size:36px; width:220px; height:96px;margin-bottom:8px;">
+	<input id="min5_btn" type="button" value="5分セット" style="font-size:36px; width:220px; height:96px;"><br/>
 	<br/>
 	<audio id="beep_audio" controls autobuffer>
-  		<source src="alerm.ogg" />
-  		<source src="alerm.mp3" />
+  		<source src="alert/alerm.ogg" />
+  		<source src="alert/alerm.mp3" />
 	</audio>
   <input id="DBG" type="text" value="FSR" style="width:120px; height:120px;text-align:center;"><br/>
 </div>
