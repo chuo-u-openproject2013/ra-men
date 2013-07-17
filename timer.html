@@ -22,7 +22,7 @@
       background-position:left bottom;
     }
   </style>
-  <script src="jquery-1.7.2.min.js"></script>
+  <script src="js/jquery-1.7.2.min.js"></script>
   <script type="text/javascript">
     function $(id){
       return document.getElementById(id);
@@ -37,35 +37,12 @@
     var alert_msg1="まだですー";
     var alert_msg2="はい、ただいま〜";
     var push_cnt=0;
-    var DBG;
+    var arduino;
 
     window.onload=function(){
       DBG=$("DBG");
       start_btn=$("start_btn");
       time_txt=$("time_txt");
-      if(document.arduino){
-        var arduino=document.arduino;
-        arduino.open("/dev/tty.usbmodem411");
-        while(true){
-          var fsr=arduino.analogRead(0);
-          if(fsr>200){
-            time_id=setInterval(showTime,500);
-            start_time=new Date();
-            break;
-          }
-        }
-        //recieve_id=setInterval(
-        //  function(){
-        //    var fsr=arduino.analogRead(0);
-        //    if(fsr>200){
-        //      time_id=setInterval(showTime,500);
-        //      start_time=new Date();
-        //    }
-        //    DBG.value="FSR:"+fsr;
-        //  }
-        //  ,1000
-        //);
-      }
       start_btn.onclick=function(){
         if(time_id==0){
           start_btn.value="STOP";
@@ -89,8 +66,26 @@
           push_cnt=1;
         }
       };
+      if(document.arduino){
+        arduino=document.arduino;
+        arduino.open("/dev/tty.usbmodem411");
+        recieve_id=setInterval(call,1000);
+      }
     };
 
+    function wait(){
+      var val=arduino.analogRead(0);
+      if(val>300){
+        clearInterval(recieve_id);
+        start_time=new Date();
+        time_id=setInterval(showTime,500);
+      }
+    }
+
+    function call(){
+      wait();
+    }
+ 
     function setClock(sec){
       remain_time=sec;
       var h=Math.floor(remain_time/60);
@@ -169,7 +164,6 @@
   		<source src="alert/alerm.mp3" />
 	</audio>
 </div>
-<input id="DBG" type="text" value="FSR" style="width:120px; height:120px;"><br/>
 <div id="label">らめえん</div>
 </body>
 </html>
