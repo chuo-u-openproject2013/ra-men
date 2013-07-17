@@ -13,9 +13,6 @@
       font-size:100px;
       color:red;
     }
-    #label.FSR_recieving{
-      color: #33FF00;
-    }
     body{
       background-image:url(img/bg.jpg);
       background-repeat:no-repeat;
@@ -40,7 +37,6 @@
     var arduino;
 
     window.onload=function(){
-      DBG=$("DBG");
       start_btn=$("start_btn");
       time_txt=$("time_txt");
       start_btn.onclick=function(){
@@ -69,7 +65,9 @@
       if(document.arduino){
         arduino=document.arduino;
         arduino.open("/dev/tty.usbmodem411");
-        recieve_id=setInterval(call,1000);
+        arduino.pinMode(0,false);
+        recieve_id=setInterval(wait,1000*30);
+        //wait();
       }
     };
 
@@ -77,13 +75,10 @@
       var val=arduino.analogRead(0);
       if(val>300){
         clearInterval(recieve_id);
+        start_btn.value="STOP";
         start_time=new Date();
         time_id=setInterval(showTime,500);
-      }
-    }
-
-    function call(){
-      wait();
+      }//else wait();
     }
  
     function setClock(sec){
